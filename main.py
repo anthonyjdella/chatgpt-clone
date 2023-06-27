@@ -1,9 +1,15 @@
 import os
 import openai
 from flask import Flask, request
-from twilio.twiml.messaging_response import MessagingResponse
+from twilio.rest import Client
+from dotenv import load_dotenv
+
+
+load_dotenv(override=True)
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
+account_sid = os.getenv('TWILIO_ACCOUNT_SID')
+auth_token = os.getenv('TWILIO_AUTH_TOKEN')
 app = Flask(__name__)
 
 
@@ -20,11 +26,15 @@ def chatgpt():
         temperature=0.7
     )
 
-    resp = MessagingResponse()
-    resp.message(response["choices"][0].message.content)
-    print(response["choices"][0].message.content)
+    client = Client(account_sid, auth_token)
 
-    return str(resp)
+    message = client.messages.create(
+        body=response["choices"][0].message.content,
+        from_=os.getenv('MY_TWILIO_NUMBER'),
+        to=os.getenv('ANTHONYS_NUMBER')
+    )
+
+    return str(message)
 
 
 if __name__ == "__main__":
