@@ -30,7 +30,7 @@ def chatgpt():
         client = Client(account_sid, auth_token)
 
         call = client.calls.create(
-            twiml=f"<Response><Say>{response['choices'][0].message.content}</Say></Response>",
+            twiml=f"<Response><Say voice='Polly.Joey'>{response['choices'][0].message.content}</Say></Response>",
             from_=os.getenv('MY_TWILIO_NUMBER'),
             to=os.getenv('ANTHONYS_NUMBER')
         )
