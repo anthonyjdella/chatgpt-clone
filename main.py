@@ -31,7 +31,7 @@ def chatgpt():
     message = client.messages.create(
         body=response["choices"][0].message.content,
         from_=os.getenv('MY_TWILIO_NUMBER'),
-        to=os.getenv('ANTHONYS_NUMBER')
+        to=request.form['From']
     )
 
     return str(message)
