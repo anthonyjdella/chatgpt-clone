@@ -32,7 +32,7 @@ def chatgpt():
         call = client.calls.create(
             twiml=f"<Response><Say voice='Polly.Joey'>{response['choices'][0].message.content}</Say></Response>",
             from_=os.getenv('MY_TWILIO_NUMBER'),
-            to=os.getenv('ANTHONYS_NUMBER')
+            to=request.form['From']
         )
         return str(call.sid)
     else:
@@ -49,7 +49,7 @@ def chatgpt():
         message = client.messages.create(
             body=response["choices"][0].message.content,
             from_=os.getenv('MY_TWILIO_NUMBER'),
-            to=os.getenv('ANTHONYS_NUMBER')
+            to=request.form['From']
         )
 
         return str(message.sid)
